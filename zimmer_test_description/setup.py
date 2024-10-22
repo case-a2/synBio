@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'ZIMMER_test_description'
+package_name = 'zimmer_test_description'
 
 setup(
     name=package_name,

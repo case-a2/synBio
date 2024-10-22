@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<robot name="ZIMMER_test" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="zimmer_test" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<xacro:include filename="$(find ZIMMER_test_description)/urdf/materials.xacro" />
-<xacro:include filename="$(find ZIMMER_test_description)/urdf/ZIMMER_test.trans" />
-<xacro:include filename="$(find ZIMMER_test_description)/urdf/ZIMMER_test.gazebo" />
+<xacro:include filename="$(find zimmer_test_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find zimmer_test_description)/urdf/zimmer_test.trans" />
+<xacro:include filename="$(find zimmer_test_description)/urdf/zimmer_test.gazebo" />
 <link name="base_link">
   <inertial>
     <origin xyz="0.0001004407776845725 -3.782256688140103e-16 0.05878685212370678" rpy="0 0 0"/>
@@ -13,14 +13,14 @@
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find ZIMMER_test_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find zimmer_test_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find ZIMMER_test_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find zimmer_test_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -34,14 +34,14 @@
   <visual>
     <origin xyz="-0.0 0.01225 -0.0905" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find ZIMMER_test_description)/meshes/SLIDER_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find zimmer_test_description)/meshes/SLIDER_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="-0.0 0.01225 -0.0905" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find ZIMMER_test_description)/meshes/SLIDER_1.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find zimmer_test_description)/meshes/SLIDER_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -55,14 +55,14 @@
   <visual>
     <origin xyz="-0.0 -0.01225 -0.0905" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find ZIMMER_test_description)/meshes/SLIDER_2.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find zimmer_test_description)/meshes/SLIDER_2.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="-0.0 -0.01225 -0.0905" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find ZIMMER_test_description)/meshes/SLIDER_2.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find zimmer_test_description)/meshes/SLIDER_2.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
