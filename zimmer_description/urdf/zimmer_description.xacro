@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<robot name="zimmer_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find zimmer_description)/urdf/materials.xacro" />
+<!-- <xacro:include filename="$(find zimmer_description)/urdf/zimmer_description.trans" /> -->
+<!-- <xacro:include filename="$(find zimmer_description)/urdf/zimmer_description.gazebo" /> -->
+
+<xacro:property name="y_origin" value="0.01225" />
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.0001004407776845725 -3.782256688140103e-16 0.05878685212370678" rpy="0 0 0"/>
+    <mass value="2.9848284063454846"/>
+    <inertia ixx="0.003517" iyy="0.005044" izz="0.002589" ixy="-0.0" iyz="-0.0" ixz="1.1e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find zimmer_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find zimmer_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<!-- SLIDER MACRO -->
+<xacro:macro name="slider" params="prefix reflect">
+  <link name="slider_${prefix}">
+   <inertial>
+    <origin xyz="0 0 0.022639226003290505" rpy="0 0 0"/>
+    <mass value="0.04981450503853536"/>
+    <inertia ixx="1e-06" iyy="2.3e-05" izz="2.4e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+      <origin xyz="-0.0 ${y_origin} -0.0905" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find zimmer_description)/meshes/SLIDER.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin xyz="-0.0 ${(y_origin)} -0.0905" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find zimmer_description)/meshes/SLIDER.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_slider_${prefix}" type="prismatic">
+    <origin xyz="0.0 ${reflect*(y_origin)} 0.0905" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="slider_${prefix}"/>
+    <axis xyz="1.0 0.0 0.0"/>
+    <limit upper="0.0105" lower="-0.0105" effort="100" velocity="100"/>
+  </joint>
+</xacro:macro>
+
+<xacro:slider prefix="1" reflect="1" />
+<xacro:slider prefix="2" reflect="-1" />
+
+</robot>
