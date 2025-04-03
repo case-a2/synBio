@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot name="zimmer_gripper" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find zimmer_description)/urdf/zimmer_description.xacro"/>
+
+  <xacro:macro name="zimmer_gripper" params="
+    prefix 
+    parent">
+    <xacro:zimmer_base prefix="${prefix}" parent="${parent}"/>
+    <xacro:slider jaw="1" reflect="1" prefix="${prefix}" />
+    <xacro:slider jaw="2" reflect="-1" prefix="${prefix}" />
+
+  </xacro:macro>
+
+</robot>

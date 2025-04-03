@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot name="ur3e_cell" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find zimmer_description)/urdf/zimmer_gripper_macro.xacro"/>
+  <xacro:include filename="$(find my_robot_cell_description)/urdf/my_robot_cell_macro.xacro"/>
+
+  <!-- end-effector prefix -->
+  <xacro:arg name="prefix" default="zimmer_"/>
+
+  <xacro:arg name="ur_type" default="ur3e"/>
+  <xacro:arg name="joint_limits_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+
+  <link name="world"/>
+  <!--This will create the scene where the robot is located in-->
+  <xacro:my_robot_cell
+    parent="world"
+    ur_type="$(arg ur_type)"
+    joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+    kinematics_parameters_file="$(arg kinematics_parameters_file)"
+    physical_parameters_file="$(arg physical_parameters_file)"
+    visual_parameters_file="$(arg visual_parameters_file)"
+    >
+      <origin xyz="0 0 1" rpy="0 0 0" />
+  </xacro:my_robot_cell>
+
+  <!-- end-effector -->
+  <xacro:zimmer_gripper 
+      prefix="$(arg prefix)"
+      parent="$(arg ur_type)_tool0">
+  </xacro:zimmer_gripper>
+
+  <!-- Attach the gripper to the UR3e tool0 -->
+  <joint name="$(arg ur_type)_tool0-$(arg prefix)base_link" type="fixed">
+    <parent link="$(arg ur_type)_tool0"/>
+    <child link="$(arg prefix)base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+
+
+</robot>
