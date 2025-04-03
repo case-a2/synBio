@@ -3,7 +3,7 @@
 
 <xacro:include filename="$(find zimmer_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find zimmer_description)/urdf/zimmer_description.trans" />
-<!-- <xacro:include filename="$(find zimmer_description)/urdf/zimmer_description.gazebo" /> -->
+<xacro:include filename="$(find zimmer_description)/urdf/zimmer_description.gazebo" />
 
 
 <xacro:property name="y_origin" value="0.01225" />
