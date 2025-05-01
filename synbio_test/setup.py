@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'sending_gpio = synbio_test.sending_gpio:main',
+            'rs_read = synbio_test.rs_read:main',
         ],
     },
 )
