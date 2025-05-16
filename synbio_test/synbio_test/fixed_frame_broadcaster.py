@@ -19,9 +19,11 @@ class FixedFrameBroadcaster(Node):
        t.header.stamp = self.get_clock().now().to_msg()
        t.header.frame_id = 'camera_link'
        t.child_frame_id = 'base_link'
+
+       # Set the translation and rotation quaternion
        t.transform.translation.x = 0.25
-       t.transform.translation.y = 0.50
-       t.transform.translation.z = 0.50
+       t.transform.translation.y = -0.50
+       t.transform.translation.z = -0.50
        t.transform.rotation.x = 0.0
        t.transform.rotation.y = -1.0
        t.transform.rotation.z = 0.0

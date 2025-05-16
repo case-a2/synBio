@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+  <xacro:macro name="workspace_synbio" params="
+    parent
+    *origin
+    ur_type
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    physical_parameters_file
+    visual_parameters_file
+    ">
+
+    <!-- TABLE -->
+    <joint name="table_base_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="table" />
+    </joint>
+
+    <link name="table">
+      <visual>
+        <geometry>
+          <mesh filename="package://workspace_test/meshes/workbench.dae"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0.75 0.5 -1"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://workspace_test/meshes/workbench.dae"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0.75 0.5 -1"/>
+      </collision>
+    </link>
+
+
+    <material name="white">
+      <color rgba="1 1 1 1"/>
+    </material>
+
+    <!-- WALL -->
+    <link name="wall">
+      <visual>
+        <geometry>
+          <mesh filename="package://my_robot_cell_description/meshes/wall.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="4.44 0.1 2.5"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="base_to_wall" type="fixed">
+      <parent link="table"/>
+      <child link="wall"/>
+      <origin xyz="1 1.5 0.5"/>
+    </joint>
+
+
+    <!-- ROBOT MOUNT 1 -->
+    <link name="robot_mount"/>
+    <joint name="base_to_robot_mount" type="fixed">
+      <parent link="table"/>
+      <child link="robot_mount"/>
+      <origin xyz="0.845 0.85 0" rpy="0 0 ${pi}" />
+    </joint>
+
+    <!--This will create the specific robot-->
+    <xacro:ur_robot
+      name="${ur_type}"
+      tf_prefix="${ur_type}1_"
+      parent="robot_mount"
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      physical_parameters_file="${physical_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}"
+    >
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:ur_robot>
+
+    <!-- ROBOT MOUNT 2 -->
+    <link name="robot_mount"/>
+    <joint name="base_to_robot_mount" type="fixed">
+      <parent link="table"/>
+      <child link="robot_mount"/>
+      <origin xyz="1.2 0.5 0" rpy="0 0 ${pi}" />
+    </joint>
+
+    <!-- ROBOT 2 -->
+    <xacro:ur_robot
+      name="${ur_type}"
+      tf_prefix="${ur_type}2_"
+      parent="robot_mount"
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      physical_parameters_file="${physical_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}"
+    >
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:ur_robot>
+
+  </xacro:macro>
+
+</robot>

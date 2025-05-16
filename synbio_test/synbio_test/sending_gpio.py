@@ -18,7 +18,7 @@ class GripperGpio(Node):
 
             # IOStates subscriber
             self.subscriber = self.create_subscription(IOStates, '/io_and_status_controller/io_states', self.callback, 10)
-    
+            
         def send_gpio(self):
             self.future = self.client.call_async(self.req)
             self.get_logger().info('sending GPIO signal...')
