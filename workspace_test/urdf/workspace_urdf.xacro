@@ -2,6 +2,7 @@
 <robot name="my_robot_cell" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find my_robot_cell_description)/urdf/testing_macro.xacro"/>
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
 
   <xacro:arg name="ur_type" default="ur3e"/>
   <xacro:arg name="joint_limits_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
@@ -9,6 +10,11 @@
   <xacro:arg name="physical_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
   <xacro:arg name="visual_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
 
+  <xacro:arg name="use_nominal_extrinsics" default="true"/>
+  <xacro:arg name="add_plug" default="false"/>
+  <xacro:arg name="use_mesh" default="true"/>
+
+ 
   <link name="world"/>
   <!--This will create the scene where the robot is located in-->
   <xacro:my_robot_cell
@@ -21,5 +27,31 @@
     >
       <origin xyz="0 0 0.845" rpy="0 0 0" />
   </xacro:my_robot_cell>
+
+  <!-- <link name="base_link"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://realsense2_description/meshes/d435_base.dae"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://realsense2_description/meshes/d435_base.dae"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </collision>
+  </link>
+
+  <joint name="camera_mount_to_realsense_d435" type="fixed">
+    <parent link="camera_mount_2"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:sensor_d435 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:sensor_d435> -->
+
 
 </robot>
