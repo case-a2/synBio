@@ -79,29 +79,26 @@
 
 
     <!-- CAMERA -->
-    <!-- <xacro:realsense2_camera>
-      <origin xyz="0 0 0.25" rpy="0 0 0"/>
-    </xacro:realsense_d435>
-    <joint name="camera_mount_to_realsense_d435" type="fixed">
-      <parent link="camera_mount_2"/>
-      <child link="realsense_d435"/>
-      <origin xyz="0 0 0.25" rpy="0 0 0"/>
-    </joint> -->
-    <!-- <link name="realsense_d435">
+    <link name="realsense_d435">
       <visual>
         <geometry>
-          <mesh filename="package://realsense2_description/meshes/_d435.dae"/>
+          <mesh filename="package://realsense2_description/meshes/d435.dae"/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://realsense2_description/meshes/_d435.dae"/>
+          <mesh filename="package://realsense2_description/meshes/d435.dae"/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
-    </link> -->
+    </link>
 
+    <joint name="camera_mount_to_realsense_d435" type="fixed">
+      <parent link="camera_mount_2"/>
+      <child link="realsense_d435"/>
+      <origin xyz="0 -0.04 0.25" rpy="${pi/2} ${3*pi/2} 0"/>
+    </joint>
 
 
     <material name="white">
