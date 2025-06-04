@@ -70,10 +70,12 @@
         <origin rpy="0 0 0" xyz="0 0 0.25"/>
       </collision>
     </link>
+    
     <joint name="camera_mount_joint" type="fixed">
       <parent link="camera_mount"/>
       <child link="camera_mount_2"/>
-      <origin xyz="0 0 0.9144" rpy="${pi/2} 0 0"/>
+      <!-- edit origin of joints to change camera height -->
+      <origin xyz="0 0 0.8" rpy="${pi/2} 0 0"/>
     </joint>
 
 
