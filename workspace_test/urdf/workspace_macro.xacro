@@ -3,6 +3,11 @@
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
 
+  <xacro:arg name="use_nominal_extrinsics" default="true"/>
+  <xacro:arg name="add_plug" default="false"/>
+  <xacro:arg name="use_mesh" default="true"/>
+
+
   <xacro:macro name="my_robot_cell" params="
     parent
     *origin
@@ -35,12 +40,12 @@
     </link>
 
     <!-- CAMERA MOUNT -->
-    <joint name="table_to_camera_mount" type="fixed">
+    <joint name="table_to_camera_mount_1" type="fixed">
       <parent link="table"/>
-      <child link="camera_mount"/>
+      <child link="camera_mount_1"/>
       <origin xyz="0.24 0.762 0" rpy="0 0 0"/>
     </joint>
-    <link name="camera_mount">
+    <link name="camera_mount_1">
       <visual>
         <geometry>
           <box size="0.030 0.030 0.9144"/>
@@ -71,33 +76,24 @@
       </collision>
     </link>
     <joint name="camera_mount_joint" type="fixed">
-      <parent link="camera_mount"/>
+      <parent link="camera_mount_1"/>
       <child link="camera_mount_2"/>
       <!-- edit origin of joints to change camera height -->
-      <origin xyz="0 0 0.690875" rpy="${pi/2} 0 0"/>
+      <origin xyz="0 0 0.8" rpy="${pi/2} 0 0"/>
     </joint>
 
+<!-- 0.690875 -->
 
 
     <!-- CAMERA -->
-    <link name="camera_link">
-      <visual>
-        <geometry>
-          <mesh filename="package://realsense2_description/meshes/d435.dae"/>
-        </geometry>
-        <origin rpy="0 ${pi/2} 0" xyz="0 0 0"/>
-      </visual>
-      <collision>
-        <geometry>
-          <mesh filename="package://realsense2_description/meshes/d435.dae"/>
-        </geometry>
-        <origin rpy="0 ${pi/2} 0" xyz="0 0 0"/>
-      </collision>
-    </link>
+    <link name="camera_mount_3" />
+    <xacro:sensor_d435 parent="camera_mount_3" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:sensor_d435>
     <joint name="camera_mount_to_realsense_d435" type="fixed">
       <parent link="camera_mount_2"/>
-      <child link="camera_link"/>
-      <origin xyz="0 -0.04 0.3375" rpy="${pi/2} 0 ${3*pi/2}"/>
+      <child link="camera_mount_3"/>
+      <origin xyz="0.01 -0.025 0.3375" rpy="${pi/2} 0 ${3*pi/2}"/>
     </joint>
 
 
