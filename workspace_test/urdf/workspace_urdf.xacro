@@ -30,10 +30,10 @@
 
   <!-- uncomment to test sensor macro -->
 
-  <!-- <link name="realsense_d435"/>
-  <xacro:sensor_d435 parent="realsense_d435" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
+  <!-- <link name="camera_link"/> -->
+  <xacro:sensor_d435 parent="camera_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
     <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:sensor_d435> -->
+  </xacro:sensor_d435>
 
 
 </robot>
