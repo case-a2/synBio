@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="my_robot_cell" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find my_robot_cell_description)/urdf/testing_macro.xacro"/>
+  <xacro:include filename="$(find my_robot_cell_description)/urdf/workspace_macro.xacro"/>
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
 
   <xacro:arg name="ur_type" default="ur3e"/>
