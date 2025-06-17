@@ -22,11 +22,22 @@ class RealsenseImageProcesing(Node):
         qos_profile = QoSProfile(depth=10)
         qos_profile.durability = QoSDurabilityPolicy.VOLATILE
 
+        self.bridge = CvBridge()
+        self.latest_depth = None
+        self.camera_intrinsics = None
+
         ## create subscribers
-        self.image_subscriber = self.create_subscription(
-            CompressedImage,
-            '/camera/camera/color/image_raw/compressed',
-            self.image_callback,
+        # self.image_subscriber = self.create_subscription(
+        #     Image,
+        #     '/camera/camera/color/image_raw',
+        #     self.image_callback,
+        #     qos_profile
+        # )
+
+        self.depth_img_subscriber = self.create_subscription(
+            Image,
+            'camera/camera/depth/image_rect_raw',
+            self.depth_callback,
             qos_profile
         )
 
@@ -43,14 +54,58 @@ class RealsenseImageProcesing(Node):
             qos_profile
         )
 
-        # self.camera_info_subscriber = self.create_subscription(
-        #     CameraInfo,
-        #     '/camera/camera/color/camera_info',
-        #     self.camera_info_callback,
-        #     qos_profile
-        # )
+        self.features_rgb = self.create_publisher(
+            Float32MultiArray,
+            'rs_node/feature_to_disparity',
+            qos_profile 
+
+        )
+
+        self.camera_info_subscriber = self.create_subscription(
+            CameraInfo,
+            '/camera/camera/depth/camera_info',
+            self.camera_info_callback,
+            qos_profile
+        )
+
 
     ## create callbacks
+    def camera_info_callback(self, msg):
+        self.camera_intrinsics = msg
+
+    def depth_callback(self, msg):
+        self.latest_depth = msg
+
+        # Returns a NumPy array
+        cv_image = self.bridge.imgmsg_to_cv2(img_msg=self.latest_depth ,desired_encoding="passthrough")
+        
+        if cv_image.dtype != np.uint8:
+            cv_image = (255 * (cv_image / cv_image.max())).astype(np.uint8)
+        
+        # self.get_logger().info(f"Shape of np.array is {cv_image.shape}, {cv_image.dtype}")
+        
+        # Keypoints from ORB
+        orb = cv2.ORB.create()
+        keypoints = orb.detect(cv_image, None)
+
+        ## NO KEYPOINTS FOUND
+        if not keypoints:
+            self.get_logger().info("No keypoints found")
+            return
+        kp, des = orb.compute(cv_image, keypoints=keypoints)
+
+        img2 = cv2.drawKeypoints(cv_image, kp, None, color=(0,255,0), flags=0)
+        output_img = self.bridge.cv2_to_imgmsg(img2)
+
+        self.image_publisher.publish(output_img)
+
+        # Verify a feature is observed:
+        # return keypoints as u, v coordinates
+        # kp = keypoints[0]
+        # u, v = (kp.pt[0], kp.pt[1])
+        # self.get_logger().info(f"features are U: {u}, V: {v}")
+
+
     def image_callback(self, msg):
         # self.get_logger().info('Received Image')
         bridge = CvBridge()
@@ -138,13 +193,13 @@ class RealsenseImageProcesing(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    rs_read = RealsenseImageProcesing()
-    # executor = MultiThreadedExecutor()
+    node = RealsenseImageProcesing()
+    rclpy.spin(node)
 
-    # executor.add_node(rs_read)
-    # executor.spin()
-    rclpy.spin(rs_read)
-
-    rs_read.destroy_node()
-    cv2.destroyAllWindows()
+    try:
+        rclpy.spin(node)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    
+    node.destroy_node()
     rclpy.shutdown()
