@@ -8,12 +8,14 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+    # target_frame = "camera_link"
     ur_type = LaunchConfiguration("ur_type")
     description_package = FindPackageShare("workspace_test")
     description_file = PathJoinSubstitution(
         [description_package, "urdf", "synbio_description.urdf.xacro"]
     )
-    # rvizconfig_file = PathJoinSubstitution([description_package, "rviz", "urdf.rviz"])
+
+    rvizconfig_file = PathJoinSubstitution([description_package, "rviz", "workspace_analysis.rviz"])
 
     robot_description = ParameterValue(
         Command(["xacro ", description_file, " ", "ur_type:=", ur_type]), value_type=str
@@ -25,6 +27,12 @@ def generate_launch_description():
         parameters=[{"robot_description": robot_description}],
     )
 
+    # tf_listener_node = Node(
+    #     package="synbio_test",
+    #     executable="tf_listener",
+    #     parameters=[{"target_frame": target_frame}]
+    # )
+
     joint_state_publisher_gui_node = Node(
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui",
@@ -35,7 +43,7 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="screen",
-        # arguments=["-d", rvizconfig_file],
+        arguments=["-d", rvizconfig_file],
     )
 
     declared_arguments = [
@@ -62,6 +70,7 @@ def generate_launch_description():
         + [
             joint_state_publisher_gui_node,
             robot_state_publisher_node,
+            # tf_listener_node,
             rviz_node,
         ]
     )

@@ -23,6 +23,7 @@ setup(
             'sending_gpio = synbio_test.sending_gpio:main',
             'rs_read = synbio_test.rs_read:main',
             'fixed_frame_broadcaster = synbio_test.fixed_frame_broadcaster:main',
+            'tf_listener = synbio_test.tf2_listener:main'
         ],
     },
 )
