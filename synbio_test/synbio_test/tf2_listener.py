@@ -47,28 +47,26 @@ class FrameListener(Node):
         # compute transformations
         self.from_frame_rel = self.get_parameter('target_frame')
         self.to_frame_rel = 'ur3e1_tool0'
-        # arrow = to_frame = from_frame = TransformStamped()
-        # pose_to = pose_from = Pose()
 
-        # If ~MSG~ is not None
         if self.tf_listener.buffer is not None :
             # Look up for the transformation between target_frame and TOOL0 frames
             # and send marker displays between TOOL0 to reach target_frame
             try:
                 marker_array = MarkerArray()
-
+                from_frame_str = self.get_parameter('target_frame').get_parameter_value().string_value
                 ## TRANSFORMS ARE NOT CHANGING
                 arrow = self.tf_buffer.lookup_transform(
                     self.to_frame_rel,
-                    self.from_frame_rel,
+                    from_frame_str,
                     rclpy.time.Time())
                 # self.get_logger().info("Arrow tf")
-                to_frame = self.tf_buffer.lookup_transform(
+                world_tool_tf = self.tf_buffer.lookup_transform(
                     self.to_frame_rel,
                     'world',
                     rclpy.time.Time())
                 
-                ee_tf = to_frame.transform.translation
+                # ee_tf = world_tool_tf.transform.translation
+
                 arrow_frame = arrow.transform.translation
                 self.point_to.x = arrow_frame.x
                 self.point_to.y = arrow_frame.y
@@ -76,7 +74,6 @@ class FrameListener(Node):
 
                 
                 self.get_logger().info("EE-tf")
-                # print(np.array([self.point_to.x, self.point_to.y, self.point_to.z]))
                 print(np.array([arrow_frame.x, arrow_frame.y, arrow_frame.z]))
                 print("\n")
 
@@ -84,7 +81,7 @@ class FrameListener(Node):
                 # arrow starts at camera
                 from_frame = self.tf_buffer.lookup_transform(
                     'world',
-                    self.from_frame_rel,
+                    from_frame_str,
                     rclpy.time.Time())
                 
                 camera_tf = from_frame.transform.translation
@@ -97,38 +94,31 @@ class FrameListener(Node):
                 print(np.array([camera_tf.x, camera_tf.y, camera_tf.z]))
 
                 # ARROW POINTS
-                # camera_link -> world
-                
-                
-
-                
-                # self.pose_from.orientation = from_frame.transform.rotation
-
-
-                # self.pose_to.position.x = to_frame.transform.translation.x
-                # self.pose_to.position.y = to_frame.transform.translation.y
-                # self.pose_to.position.z = to_frame.transform.translation.z
-                # self.pose_to.orientation = to_frame.transform.rotation
-                
-
-                # arrow_length = np.array([arrow_tf.x, arrow_tf.y, arrow_tf.z])
+                # camera_link -> ur3e_tool0 published from WORLD
+                # NEED: publish arrow from CAMERA_LINK frame          
 
                 # ARROW MESSAGE
                 # points = [Point(x=0.0, y=0.0, z=0.0),Point(x=0.0,y=1.0,z=3.0)]
-                points = [self.point_from, self.point_to]
+
+                # Publish ARROW_FRAME from CAMERA_LINK tf
+                # PERFORM FORWARD KINEMATICS for TF
+
+                points = [Point(x=camera_tf.x, y=camera_tf.y, z=camera_tf.z),Point(x=arrow_frame.x,y=arrow_frame.y,z=arrow_frame.z)]
+                # points = [self.point_from, self.point_to]
                 arrow_msg = Marker()
-                arrow_msg.action = Marker.ADD
                 arrow_msg.ns = "labels"
                 arrow_msg.id = 0
                 arrow_msg.header.frame_id = "world"
                 arrow_msg.header.stamp = arrow.header.stamp
                 arrow_msg.scale.x = 0.05
-                arrow_msg.scale.y = 0.20
-                arrow_msg.scale.z = 0.20 # np.linalg.norm(arrow_length)
+                arrow_msg.scale.y = 0.10
+                arrow_msg.scale.z = 0.10 # np.linalg.norm(arrow_length)
                 arrow_msg.type = Marker.ARROW # arrow
                 arrow_msg.points =  points
                 arrow_msg.color.a = 1.0
                 arrow_msg.color.g = 1.0
+                arrow_msg.action = Marker.ADD
+
 
                 marker_array.markers.append(arrow_msg)
 
@@ -155,34 +145,18 @@ class FrameListener(Node):
                 label_msg_2.type = Marker.TEXT_VIEW_FACING # view-oriented text
                 label_msg_2.scale.z = 0.10
                 label_msg_2.action = Marker.ADD
-                label_msg_2.text = self.from_frame_rel
+                label_msg_2.text = from_frame_str
                 # label_msg_2.pose = self.pose_from
                 label_msg_2.color.a = 1.0
 
-
                 marker_array.markers.append(label_msg_2)
-                # self.get_logger().info("Appended label 2")
 
-
-                # arrow_label_msg = Marker()
-                # arrow_label_msg.ns = "labels"
-                # arrow_label_msg.header.frame_id = "table"
-                # arrow_label_msg.id = 3
-                # arrow_label_msg.type = Marker.TEXT_VIEW_FACING # view-oriented text
-                # arrow_label_msg.scale.z = 1.0
-                # arrow_label_msg.action = Marker.ADD
-                # arrow_label_msg.text = str(arrow.transform)
-                # arrow_label_msg.pose = arrow_msg.pose
-                # arrow_label_msg.color.a = 1.0
-
-
-                # marker_array.markers.append(arrow_label_msg)
                 self.marker_pub.publish(marker_array)
 
 
             except TransformException as ex:
                 self.get_logger().info(
-                    f'Could not transform {self.to_frame_rel} to {self.from_frame_rel}: {ex}')
+                    f'Could not transform {self.to_frame_rel} to {from_frame_str}: {ex}')
                 return
 
 def main(args=None):
