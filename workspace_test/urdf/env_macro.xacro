@@ -8,16 +8,12 @@
   <xacro:arg name="use_mesh" default="true"/>
 
 
-  <xacro:macro name="my_robot_cell" params="
+  <xacro:macro name="spawn_env" params="
     parent
     *origin
-    ur_type
-    joint_limits_parameters_file
-    kinematics_parameters_file
-    physical_parameters_file
-    visual_parameters_file
     ">
-
+    
+    
     <!-- TABLE -->
     <joint name="table_base_joint" type="fixed">
       <xacro:insert_block name="origin" />
@@ -121,48 +117,6 @@
       <origin xyz="1 1.1 0.5"/>
     </joint>
 
-
-    <!-- ROBOT MOUNT 1 -->
-    <link name="robot_mount_1"/>
-    <joint name="base_to_robot_mount_1" type="fixed">
-      <parent link="table"/>
-      <child link="robot_mount_1"/>
-      <origin xyz="0.9144 0.5588 0" rpy="0 0 ${3*pi/2}" />
-    </joint>
-
-    <!--This will create the specific robot-->
-    <xacro:ur_robot
-      name="${ur_type}"
-      tf_prefix="${ur_type}1_"
-      parent="robot_mount_1"
-      joint_limits_parameters_file="${joint_limits_parameters_file}"
-      kinematics_parameters_file="${kinematics_parameters_file}"
-      physical_parameters_file="${physical_parameters_file}"
-      visual_parameters_file="${visual_parameters_file}"
-    >
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:ur_robot>
-
-    <!-- ROBOT MOUNT 2 -->
-    <link name="robot_mount_2"/>
-    <joint name="base_to_robot_mount_2" type="fixed">
-      <parent link="table"/>
-      <child link="robot_mount_2"/>
-      <origin xyz="1.5748 0.508 0" rpy="0 0 ${3*pi/2}" />
-    </joint>
-
-    <!-- ROBOT 2 -->
-    <xacro:ur_robot
-      name="${ur_type}"
-      tf_prefix="${ur_type}2_"
-      parent="robot_mount_2"
-      joint_limits_parameters_file="${joint_limits_parameters_file}"
-      kinematics_parameters_file="${kinematics_parameters_file}"
-      physical_parameters_file="${physical_parameters_file}"
-      visual_parameters_file="${visual_parameters_file}"
-    >
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:ur_robot>
 
   </xacro:macro>
 

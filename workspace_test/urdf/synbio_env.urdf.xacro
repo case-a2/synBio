@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="synbio_env" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find workspace_test)/urdf/env_macro.xacro"/>
+  <xacro:property name="table_height" value="0.845"/>
+
+  <link name="world"/>
+  <!--This will create the scene where the robot is located in-->
+  <xacro:spawn_env
+    parent="world"
+    >
+      <origin xyz="0 0 ${table_height}" rpy="0 0 0" />
+  </xacro:spawn_env>
+
+
+</robot>
