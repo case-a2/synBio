@@ -20,7 +20,7 @@
 
   <!-- LEFT -->
   <xacro:property name="left_xyz" default="0.9144 0.5588 0.845" />
-  <xacro:property name="left_rpy" default="0 0 ${3*pi/2}" />
+  <xacro:property name="left_rpy" default="0 0 ${pi}" />
   <xacro:property name="left_tf_prefix" default="left_"/>
 
 
