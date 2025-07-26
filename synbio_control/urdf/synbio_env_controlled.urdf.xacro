@@ -33,7 +33,6 @@
   
   <!-- LEFT CONTROL PARAMS -->
   <xacro:arg name="left_robot_ip" default="0.0.0.0"/>
-  <xacro:arg name="left_headless_mode" default="false" />
   <xacro:arg name="left_reverse_port" default="50001"/>
   <xacro:arg name="left_script_sender_port" default="50002"/>
   <xacro:arg name="left_script_command_port" default="50004"/>
@@ -44,20 +43,18 @@
   <xacro:property name="right_rpy" default="0 0 ${pi}" />
   <xacro:property name="right_tf_prefix" default="right_"/>
 
-  <!-- <xacro:arg name="right_ur_type" default="ur3e"/>
+  <xacro:arg name="right_ur_type" default="ur3e"/>
   <xacro:arg name="right_joint_limits_parameters_file" default="$(find ur_description)/config/$(arg right_ur_type)/joint_limits.yaml"/>
   <xacro:arg name="right_kinematics_parameters_file" default="$(find ur_description)/config/$(arg right_ur_type)/default_kinematics.yaml"/>
   <xacro:arg name="right_physical_parameters_file" default="$(find ur_description)/config/$(arg right_ur_type)/physical_parameters.yaml"/>
-  <xacro:arg name="right_visual_parameters_file" default="$(find ur_description)/config/$(arg right_ur_type)/visual_parameters.yaml"/> -->
+  <xacro:arg name="right_visual_parameters_file" default="$(find ur_description)/config/$(arg right_ur_type)/visual_parameters.yaml"/>
 
   <!-- RIGHT CONTROL PARAMS -->
-  <!-- <xacro:arg name="right_robot_ip" default="0.0.0.0"/>
-  <xacro:arg name="right_headless_mode" default="false" />
-  <xacro:arg name="right_ur_script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
-  <xacro:arg name="right_ur_output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
-  <xacro:arg name="right_ur_input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
-  <xacro:arg name="right_use_mock_hardware" default="false" />
-  <xacro:arg name="right_mock_sensor_commands" default="false" /> -->
+  <xacro:arg name="right_robot_ip" default="0.0.0.0"/>
+  <xacro:arg name="right_reverse_port" default="50005"/>
+  <xacro:arg name="right_script_sender_port" default="50006"/>
+  <xacro:arg name="right_script_command_port" default="50008"/>
+  <xacro:arg name="right_trajectory_port" default="50007"/>
 
 
   <xacro:property name="table_height" value="0.845"/>
@@ -74,7 +71,7 @@
   <xacro:ur_robot
     parent="world"
     tf_prefix="${left_tf_prefix}"
-    name="$(arg left_ur_type)"
+    name="left_$(arg left_ur_type)"
     robot_ip="$(arg left_robot_ip)"
     joint_limits_parameters_file="$(arg left_joint_limits_parameters_file)"
     kinematics_parameters_file="$(arg left_kinematics_parameters_file)"
@@ -87,8 +84,36 @@
     non_blocking_read="$(arg non_blocking_read)"
     use_fake_hardware="$(arg use_fake_hardware)"
     fake_sensor_commands="$(arg fake_sensor_commands)"
+    reverse_port="$(arg left_reverse_port)"
+    script_command_port="$(arg left_script_command_port)"
+    script_sender_port="$(arg left_script_sender_port)"
+    trajectory_port="$(arg left_trajectory_port)"
     >
     <origin xyz="${left_xyz}" rpy="${left_rpy}"/>
+  </xacro:ur_robot>
+
+  <xacro:ur_robot
+    parent="world"
+    tf_prefix="${right_tf_prefix}"
+    name="right_$(arg right_ur_type)"
+    robot_ip="$(arg right_robot_ip)"
+    joint_limits_parameters_file="$(arg right_joint_limits_parameters_file)"
+    kinematics_parameters_file="$(arg right_kinematics_parameters_file)"
+    physical_parameters_file="$(arg right_physical_parameters_file)"
+    visual_parameters_file="$(arg right_visual_parameters_file)"
+    generate_ros2_control_tag="$(arg generate_ros2_control_tag)"
+    script_filename="$(arg ur_script_filename)"
+    input_recipe_filename="$(arg ur_input_recipe_filename)"
+    output_recipe_filename="$(arg ur_output_recipe_filename)"
+    non_blocking_read="$(arg non_blocking_read)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    fake_sensor_commands="$(arg fake_sensor_commands)"
+    reverse_port="$(arg right_reverse_port)"
+    script_command_port="$(arg right_script_command_port)"
+    script_sender_port="$(arg right_script_sender_port)"
+    trajectory_port="$(arg right_trajectory_port)"
+    >
+    <origin xyz="${right_xyz}" rpy="${right_rpy}"/>
   </xacro:ur_robot>
 
 

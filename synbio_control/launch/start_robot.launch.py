@@ -10,10 +10,10 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup():
     # Initialize Arguments
-    # right_ur_type = LaunchConfiguration("right_ur_type")
+    right_ur_type = LaunchConfiguration("right_ur_type")
     left_ur_type = LaunchConfiguration("left_ur_type")
 
-    # right_robot_ip = LaunchConfiguration("right_robot_ip")
+    right_robot_ip = LaunchConfiguration("right_robot_ip")
     left_robot_ip = LaunchConfiguration("left_robot_ip")
 
     # General arguments
@@ -25,17 +25,18 @@ def launch_setup():
     headless_mode = LaunchConfiguration("headless_mode")
 
     # Robot specific arguments
-    # right_use_mock_hardware = LaunchConfiguration("right_use_mock_hardware")
-    # right_mock_sensor_commands = LaunchConfiguration("right_mock_sensor_commands")
-    # right_initial_joint_controller = LaunchConfiguration("right_initial_joint_controller")
-    # right_activate_joint_controller = LaunchConfiguration("right_activate_joint_controller")
-    # right_launch_dashboard_client = LaunchConfiguration("right_launch_dashboard_client")
-
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     use_fake_sensor_commands = LaunchConfiguration("use_fake_sensor_commands")
+    activate_joint_controller = LaunchConfiguration("activate_joint_controller")
+
+
+    # Left
     left_initial_joint_controller = LaunchConfiguration("left_initial_joint_controller")
-    left_activate_joint_controller = LaunchConfiguration("left_activate_joint_controller")
     left_launch_dashboard_client = LaunchConfiguration("left_launch_dashboard_client")
+
+    # Right
+    right_initial_joint_controller = LaunchConfiguration("right_initial_joint_controller")
+    right_launch_dashboard_client = LaunchConfiguration("right_launch_dashboard_client")
 
     # Single controller manager comprising of controllers for both arms
     control_node = Node(
@@ -54,95 +55,71 @@ def launch_setup():
         ],
     )
 
-    # right_dashboard_client_node = Node(
-    #     package="ur_robot_driver",
-    #     condition=IfCondition(right_launch_dashboard_client) and UnlessCondition(right_use_mock_hardware),
-    #     executable="dashboard_client",
-    #     name="dashboard_client",
-    #     namespace="right",
-    #     output="screen",
-    #     emulate_tty=True,
-    #     parameters=[{"robot_ip": right_robot_ip}],
-    # )
+    right_dashboard_client_node = Node(
+        package="ur_robot_driver",
+        condition=IfCondition(right_launch_dashboard_client) and UnlessCondition(use_fake_hardware),
+        executable="dashboard_client",
+        name="dashboard_client",
+        namespace="right",
+        output="screen",
+        emulate_tty=True,
+        parameters=[{"robot_ip": right_robot_ip}],
+    )
 
     left_dashboard_client_node = Node(
         package="ur_robot_driver",
         condition=IfCondition(left_launch_dashboard_client) and UnlessCondition(use_fake_hardware),
         executable="dashboard_client",
         name="dashboard_client",
-        # namespace="left",
+        namespace="left",
         output="screen",
         emulate_tty=True,
         parameters=[{"robot_ip": left_robot_ip}],
     )
 
-    # right_urscript_interface = Node(
-    #     package="ur_robot_driver",
-    #     executable="urscript_interface",
-    #     namespace="right",
-    #     parameters=[{"robot_ip": right_robot_ip}],
-    #     output="screen",
-    #     condition=UnlessCondition(right_use_mock_hardware),
-    # )
+    right_urscript_interface = Node(
+        package="ur_robot_driver",
+        executable="urscript_interface",
+        namespace="right",
+        parameters=[{"robot_ip": right_robot_ip}],
+        output="screen",
+        condition=UnlessCondition(use_fake_hardware),
+    )
 
     left_urscript_interface = Node(
         package="ur_robot_driver",
         executable="urscript_interface",
-        # namespace="left",
+        namespace="left",
         parameters=[{"robot_ip": left_robot_ip}],
         output="screen",
         condition=UnlessCondition(use_fake_hardware),
     )
 
-    # right_controller_stopper_node = Node(
-    #     package="ur_robot_driver",
-    #     executable="controller_stopper_node",
-    #     namespace="right",
-    #     name="controller_stopper",
-    #     output="screen",
-    #     emulate_tty=True,
-    #     condition=UnlessCondition(right_use_mock_hardware),
-    #     parameters=[
-    #         {"headless_mode": headless_mode},
-    #         {"joint_controller_active": right_activate_joint_controller},
-    #         {
-    #             "consistent_controllers": [
-    #                 "joint_state_broadcaster",
-    #                 "right_io_and_status_controller",
-    #                 "left_io_and_status_controller",
-    #                 "right_force_torque_sensor_broadcaster",
-    #                 "left_force_torque_sensor_broadcaster",
-    #                 "right_speed_scaling_state_broadcaster",
-    #                 "left_speed_scaling_state_broadcaster",
-    #             ]
-    #         },
-    #     ],
-    # )
-
-    left_controller_stopper_node = Node(
+    controller_stopper_node = Node(
         package="ur_robot_driver",
         executable="controller_stopper_node",
-        # namespace="left",
+        namespace="right",
         name="controller_stopper",
         output="screen",
         emulate_tty=True,
         condition=UnlessCondition(use_fake_hardware),
         parameters=[
             {"headless_mode": headless_mode},
-            {"joint_controller_active": left_activate_joint_controller},
+            {"joint_controller_active": activate_joint_controller},
             {
                 "consistent_controllers": [
-                    "left_joint_state_broadcaster",
-                    # "right_io_and_status_controller",
+                    "joint_state_broadcaster",
+                    "right_io_and_status_controller",
                     "left_io_and_status_controller",
-                    # "right_force_torque_sensor_broadcaster",
+                    "right_force_torque_sensor_broadcaster",
                     "left_force_torque_sensor_broadcaster",
-                    # "right_speed_scaling_state_broadcaster",
+                    "right_speed_scaling_state_broadcaster",
                     "left_speed_scaling_state_broadcaster",
                 ]
             },
         ],
     )
+
 
     rviz_node = Node(
         package="rviz2",
@@ -170,16 +147,16 @@ def launch_setup():
         )
 
     controllers_active = [
-        "left_joint_state_broadcaster",
-        # "right_io_and_status_controller",
+        "joint_state_broadcaster",
+        "right_io_and_status_controller",
         "left_io_and_status_controller",
-        # "right_speed_scaling_state_broadcaster",
+        "right_speed_scaling_state_broadcaster",
         "left_speed_scaling_state_broadcaster",
-        # "right_force_torque_sensor_broadcaster",
+        "right_force_torque_sensor_broadcaster",
         "left_force_torque_sensor_broadcaster",
     ]
     controllers_inactive = [
-        # "right_forward_position_controller",
+        "right_forward_position_controller",
         "left_forward_position_controller",
     ]
 
@@ -188,18 +165,18 @@ def launch_setup():
     ]
 
     # There may be other controllers of the joints, but this is the initially-started one
-    # right_initial_joint_controller_spawner_started = Node(
-    #     package="controller_manager",
-    #     executable="spawner",
-    #     arguments=[
-    #         right_initial_joint_controller,
-    #         "-c",
-    #         "/controller_manager",
-    #         "--controller-manager-timeout",
-    #         controller_spawner_timeout,
-    #     ],
-    #     condition=IfCondition(right_activate_joint_controller),
-    # )
+    right_initial_joint_controller_spawner_started = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            right_initial_joint_controller,
+            "-c",
+            "/controller_manager",
+            "--controller-manager-timeout",
+            controller_spawner_timeout,
+        ],
+        condition=IfCondition(activate_joint_controller),
+    )
     left_initial_joint_controller_spawner_started = Node(
         package="controller_manager",
         executable="spawner",
@@ -210,21 +187,21 @@ def launch_setup():
             "--controller-manager-timeout",
             controller_spawner_timeout,
         ],
-        condition=IfCondition(left_activate_joint_controller),
+        condition=IfCondition(activate_joint_controller),
     )
-    # right_initial_joint_controller_spawner_stopped = Node(
-    #     package="controller_manager",
-    #     executable="spawner",
-    #     arguments=[
-    #         right_initial_joint_controller,
-    #         "-c",
-    #         "/controller_manager",
-    #         "--controller-manager-timeout",
-    #         controller_spawner_timeout,
-    #         "--inactive",
-    #     ],
-    #     condition=UnlessCondition(right_activate_joint_controller),
-    # )
+    right_initial_joint_controller_spawner_stopped = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            right_initial_joint_controller,
+            "-c",
+            "/controller_manager",
+            "--controller-manager-timeout",
+            controller_spawner_timeout,
+            "--inactive",
+        ],
+        condition=UnlessCondition(activate_joint_controller),
+    )
     left_initial_joint_controller_spawner_stopped = Node(
         package="controller_manager",
         executable="spawner",
@@ -236,32 +213,32 @@ def launch_setup():
             controller_spawner_timeout,
             "--inactive",
         ],
-        condition=UnlessCondition(left_activate_joint_controller),
+        condition=UnlessCondition(activate_joint_controller),
     )
 
     rsp = IncludeLaunchDescription(
         AnyLaunchDescriptionSource(description_launchfile),
         launch_arguments={
-            # "right_robot_ip": right_robot_ip,
+            "right_robot_ip": right_robot_ip,
             "left_robot_ip": left_robot_ip,
-            # "right_ur_type": right_ur_type,
+            "right_ur_type": right_ur_type,
             "left_ur_type": left_ur_type,
         }.items(),
     )
 
     nodes_to_start = [
         control_node,
-        # right_dashboard_client_node,
+        right_dashboard_client_node,
         left_dashboard_client_node,
-        # right_controller_stopper_node,
-        left_controller_stopper_node,
-        # right_urscript_interface,
+        controller_stopper_node,
+        # left_controller_stopper_node,
+        right_urscript_interface,
         left_urscript_interface,
         rsp,
         rviz_node,
-        # right_initial_joint_controller_spawner_stopped,
+        right_initial_joint_controller_spawner_stopped,
         left_initial_joint_controller_spawner_stopped,
-        # right_initial_joint_controller_spawner_started,
+        right_initial_joint_controller_spawner_started,
         left_initial_joint_controller_spawner_started,
     ] + controller_spawners
 
@@ -271,24 +248,24 @@ def launch_setup():
 def generate_launch_description():
     declared_arguments = []
     # UR specific arguments
-    # declared_arguments.append(
-    #     DeclareLaunchArgument(
-    #         "right_ur_type",
-    #         description="Type/series of used UR robot.",
-    #         choices=[
-    #             "ur3",
-    #             "ur3e",
-    #             "ur5",
-    #             "ur5e",
-    #             "ur10",
-    #             "ur10e",
-    #             "ur16e",
-    #             "ur20",
-    #             "ur30",
-    #         ],
-    #         default_value="ur3e",
-    #     )
-    # )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "right_ur_type",
+            description="Type/series of used UR robot.",
+            choices=[
+                "ur3",
+                "ur3e",
+                "ur5",
+                "ur5e",
+                "ur10",
+                "ur10e",
+                "ur16e",
+                "ur20",
+                "ur30",
+            ],
+            default_value="ur3e",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "left_ur_type",
@@ -307,13 +284,12 @@ def generate_launch_description():
             default_value="ur3e",
         )
     )
-    # declared_arguments.append(
-    #     DeclareLaunchArgument(
-    #         "right_robot_ip",
-    #         default_value="192.168.0.101",
-    #         description="IP address by which right can be reached.",
-    #     )
-    # )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "right_robot_ip",
+            description="IP address by which right can be reached.",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "left_robot_ip",
@@ -362,7 +338,7 @@ def generate_launch_description():
             "fake_sensor_commands",
             default_value="false",
             description="Enable mock command interfaces for right's sensors used for simple simulations. "
-            "Used only if 'use_mock_hardware' parameter is true.",
+            "Used only if 'use_fake_hardware' parameter is true.",
         )
     )
     declared_arguments.append(
@@ -379,13 +355,13 @@ def generate_launch_description():
             description="Timeout used when spawning controllers.",
         )
     )
-    # declared_arguments.append(
-    #     DeclareLaunchArgument(
-    #         "right_initial_joint_controller",
-    #         default_value="right_scaled_joint_trajectory_controller",
-    #         description="Initially loaded robot controller for the right robot arm.",
-    #     )
-    # )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "right_initial_joint_controller",
+            default_value="right_scaled_joint_trajectory_controller",
+            description="Initially loaded robot controller for the right robot arm.",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "left_initial_joint_controller",
@@ -393,20 +369,20 @@ def generate_launch_description():
             description="Initially loaded robot controller for the left robot arm.",
         )
     )
-    # declared_arguments.append(
-    #     DeclareLaunchArgument(
-    #         "right_activate_joint_controller",
-    #         default_value="true",
-    #         description="Activate loaded joint controller for the right robot arm.",
-    #     )
-    # )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "left_activate_joint_controller",
+            "activate_joint_controller",
             default_value="true",
-            description="Activate loaded joint controller for the left robot arm.",
+            description="Activate loaded joint controller for the right robot arm.",
         )
     )
+    # declared_arguments.append(
+    #     DeclareLaunchArgument(
+    #         "left_activate_joint_controller",
+    #         default_value="true",
+    #         description="Activate loaded joint controller for the left robot arm.",
+    #     )
+    # )
     declared_arguments.append(
         DeclareLaunchArgument(
             "launch_rviz", default_value="false", description="Launch RViz?"
@@ -421,13 +397,13 @@ def generate_launch_description():
             description="RViz config file (absolute path) to use when launching rviz.",
         )
     )
-    # declared_arguments.append(
-    #     DeclareLaunchArgument(
-    #         "right_launch_dashboard_client",
-    #         default_value="true",
-    #         description="Launch Dashboard Client?",
-    #     )
-    # )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "right_launch_dashboard_client",
+            default_value="true",
+            description="Launch Dashboard Client?",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "left_launch_dashboard_client",

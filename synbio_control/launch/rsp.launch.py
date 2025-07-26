@@ -14,15 +14,15 @@ from launch.substitutions import (
 
 def generate_launch_description():
     ur_type = LaunchConfiguration("ur_type")
-    left_robot_ip = LaunchConfiguration("left_robot_ip")
-    # right_robot_ip = LaunchConfiguration("right_robot_ip")
-
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
-
     headless_mode = LaunchConfiguration("headless_mode")
 
-    kinematics_parameters_file = LaunchConfiguration("kinematics_parameters_file")
+    left_robot_ip = LaunchConfiguration("left_robot_ip")
+    right_robot_ip = LaunchConfiguration("right_robot_ip")
+    left_kinematics_parameters_file = LaunchConfiguration("left_kinematics_parameters_file")
+    right_kinematics_parameters_file = LaunchConfiguration("right_kinematics_parameters_file")
+
 
     # Load description with necessary parameters
     robot_description_content = Command(
@@ -40,14 +40,17 @@ def generate_launch_description():
             "left_robot_ip:=",
             left_robot_ip,
             " ",
-            # "right_robot_ip:=",
-            # right_robot_ip,
-            # " ",
+            "right_robot_ip:=",
+            right_robot_ip,
+            " ",
             "ur_type:=",
             ur_type,
             " ",
-            "kinematics_parameters_file:=",
-            kinematics_parameters_file,
+            "left_kinematics_parameters_file:=",
+            left_kinematics_parameters_file,
+            " ",
+            "right_kinematics_parameters_file:=",
+            right_kinematics_parameters_file,
             " ",
             "use_fake_hardware:=",
             use_fake_hardware,
@@ -88,19 +91,32 @@ def generate_launch_description():
             description="IP address by which the left robot can be reached.",
         )
     )
-    # declared_arguments.append(
-    #     DeclareLaunchArgument(
-    #         "right_robot_ip", description="IP address by which the right robot can be reached."
-    #     )
-    # )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "kinematics_parameters_file",
+            "right_robot_ip", description="IP address by which the right robot can be reached."
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "left_kinematics_parameters_file",
             default_value=PathJoinSubstitution(
                 [
                     FindPackageShare("synbio_control"),
                     "config",
-                    "my_robot_calibration.yaml",
+                    "left_robot_calibration.yaml",
+                ]
+            ),
+            description="The calibration configuration of the actual robot used.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "right_kinematics_parameters_file",
+            default_value=PathJoinSubstitution(
+                [
+                    FindPackageShare("synbio_control"),
+                    "config",
+                    "right_robot_calibration.yaml",
                 ]
             ),
             description="The calibration configuration of the actual robot used.",
