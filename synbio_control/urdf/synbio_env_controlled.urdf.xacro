@@ -2,8 +2,6 @@
 <robot name="synbio_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find workspace_test)/urdf/env_macro.xacro"/>
-  <xacro:include filename="$(find workspace_test)/urdf/left_robot.urdf.xacro"/>
-  <xacro:include filename="$(find workspace_test)/urdf/right_robot.urdf.xacro"/>
   <xacro:include filename="$(find ur_description)/urdf/ur.ros2_control.xacro"/>
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
   
@@ -21,7 +19,7 @@
 
 
   <!-- LEFT -->
-  <xacro:property name="left_xyz" default="1.5748 0.508 0.845" />
+  <xacro:property name="left_xyz" default="0.9144 0.5588 0.845" />
   <xacro:property name="left_rpy" default="0 0 ${3*pi/2}" />
   <xacro:property name="left_tf_prefix" default="left_"/>
 
@@ -43,7 +41,7 @@
 
   <!-- RIGHT -->
   <xacro:property name="right_xyz" default="1.5748 0.508 0.845"/>
-  <xacro:property name="right_rpy" default="0 0 ${3*pi/2}" />
+  <xacro:property name="right_rpy" default="0 0 ${pi}" />
   <xacro:property name="right_tf_prefix" default="right_"/>
 
   <!-- <xacro:arg name="right_ur_type" default="ur3e"/>
@@ -92,31 +90,6 @@
     >
     <origin xyz="${left_xyz}" rpy="${left_rpy}"/>
   </xacro:ur_robot>
-
-
-  <!-- <xacro:left_robot_macro
-    parent="world"
-    left_ur_type="$(arg left_ur_type)"
-    left_joint_limits_parameters_file="$(arg left_joint_limits_parameters_file)"
-    left_kinematics_parameters_file="$(arg left_kinematics_parameters_file)"
-    left_physical_parameters_file="$(arg left_physical_parameters_file)"
-    left_visual_parameters_file="$(arg left_visual_parameters_file)"
-    left_generate_ros2_control_tag="$(arg left_generate_ros2_control_tag)"
-    >
-    <origin xyz="0 0 1" rpy="0 0 0" />
-  </xacro:left_robot_macro> -->
-
-
-  <!-- <xacro:right_robot_macro
-    parent="world"
-    right_ur_type="$(arg right_ur_type)"
-    right_joint_limits_parameters_file="$(arg right_joint_limits_parameters_file)"
-    right_kinematics_parameters_file="$(arg right_kinematics_parameters_file)"
-    right_physical_parameters_file="$(arg right_physical_parameters_file)"
-    right_visual_parameters_file="$(arg right_visual_parameters_file)"
-    >
-    <origin xyz="0 0 1" rpy="0 0 0" />
-  </xacro:right_robot_macro> -->
 
 
 </robot>
