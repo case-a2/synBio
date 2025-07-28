@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="synbio_env">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import synbio_env urdf file -->
+    <xacro:include filename="$(find synbio_control)/urdf/synbio_env_controlled.urdf.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="synbio_env.ros2_control.xacro" />
+
+
+    <xacro:synbio_env_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

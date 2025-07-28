@@ -1,15 +1,15 @@
-# Default initial positions for my_robot_cell's ros2_control fake system
+# Default initial positions for synbio_env's ros2_control fake system
 
 initial_positions:
-  ur3e1_elbow_joint: 0
-  ur3e1_shoulder_lift_joint: 0
-  ur3e1_shoulder_pan_joint: 0
-  ur3e1_wrist_1_joint: 0
-  ur3e1_wrist_2_joint: 0
-  ur3e1_wrist_3_joint: 0
-  ur3e2_elbow_joint: 0
-  ur3e2_shoulder_lift_joint: 0
-  ur3e2_shoulder_pan_joint: 0
-  ur3e2_wrist_1_joint: 0
-  ur3e2_wrist_2_joint: 0
-  ur3e2_wrist_3_joint: 0
+  left_elbow_joint: 0
+  left_shoulder_lift_joint: 0
+  left_shoulder_pan_joint: 0
+  left_wrist_1_joint: 0
+  left_wrist_2_joint: 0
+  left_wrist_3_joint: 0
+  right_elbow_joint: 0
+  right_shoulder_lift_joint: 0
+  right_shoulder_pan_joint: 0
+  right_wrist_1_joint: 0
+  right_wrist_2_joint: 0
+  right_wrist_3_joint: 0
