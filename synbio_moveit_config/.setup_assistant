@@ -1,7 +1,7 @@
 moveit_setup_assistant_config:
   urdf:
     package: synbio_moveit_config
-    relative_path: urdf/synbio_env.urdf.xacro
+    relative_path: config/synbio_env.urdf.xacro
   srdf:
     relative_path: config/synbio_env.srdf
   package_settings:

@@ -23,4 +23,4 @@ def generate_launch_description():
         }
     }]
 
-    return generate_move_group_launch(moveit_config, parameters=extra_parameters)
+    return generate_move_group_launch(moveit_config)
