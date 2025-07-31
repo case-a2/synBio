@@ -1,9 +1,9 @@
 moveit_setup_assistant_config:
   urdf:
-    package: my_robot_cell_description
-    relative_path: urdf/my_robot_cell.urdf.xacro
+    package: synbio_moveit_config
+    relative_path: urdf/synbio_env.urdf.xacro
   srdf:
-    relative_path: config/my_robot_cell.srdf
+    relative_path: config/synbio_env.srdf
   package_settings:
     author_name: Case Ashton
     author_email: case@tamu.edu
