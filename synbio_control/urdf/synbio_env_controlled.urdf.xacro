@@ -4,6 +4,8 @@
   <xacro:include filename="$(find workspace_test)/urdf/env_macro.xacro"/>
   <xacro:include filename="$(find ur_description)/urdf/ur.ros2_control.xacro"/>
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find zimmer_description)/urdf/zimmer_gripper_macro.xacro"/>
+
   
 
   <!-- SHARED CONTROL PARAMS -->
@@ -92,6 +94,12 @@
     <origin xyz="${left_xyz}" rpy="${left_rpy}"/>
   </xacro:ur_robot>
 
+  <!-- end-effector -->
+  <xacro:zimmer_gripper 
+      prefix="${left_tf_prefix}gripper_"
+      parent="${left_tf_prefix}tool0">
+  </xacro:zimmer_gripper>
+
   <xacro:ur_robot
     parent="world"
     tf_prefix="${right_tf_prefix}"
@@ -115,6 +123,12 @@
     >
     <origin xyz="${right_xyz}" rpy="${right_rpy}"/>
   </xacro:ur_robot>
+
+  <!-- end-effector -->
+  <xacro:zimmer_gripper 
+      prefix="${right_tf_prefix}gripper_"
+      parent="${right_tf_prefix}tool0">
+  </xacro:zimmer_gripper>
 
 
 </robot>
