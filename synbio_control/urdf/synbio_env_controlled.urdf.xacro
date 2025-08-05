@@ -7,6 +7,8 @@
   <xacro:include filename="$(find zimmer_description)/urdf/zimmer_gripper_macro.xacro"/>
 
   
+  <xacro:property name="table_height" value="0"/>
+
 
   <!-- SHARED CONTROL PARAMS -->
   <xacro:arg name="use_fake_hardware" default="false" />
@@ -21,7 +23,7 @@
 
 
   <!-- LEFT -->
-  <xacro:property name="left_xyz" default="0.9144 0.5588 0.845" />
+  <xacro:property name="left_xyz" default="0.9144 0.5588 ${table_height}" />
   <xacro:property name="left_rpy" default="0 0 ${pi}" />
   <xacro:property name="left_tf_prefix" default="left_"/>
 
@@ -41,7 +43,7 @@
   <xacro:arg name="left_trajectory_port" default="50003"/>
 
   <!-- RIGHT -->
-  <xacro:property name="right_xyz" default="1.5748 0.508 0.845"/>
+  <xacro:property name="right_xyz" default="1.5748 0.508 ${table_height}"/>
   <xacro:property name="right_rpy" default="0 0 ${pi}" />
   <xacro:property name="right_tf_prefix" default="right_"/>
 
@@ -59,7 +61,6 @@
   <xacro:arg name="right_trajectory_port" default="50007"/>
 
 
-  <xacro:property name="table_height" value="0.845"/>
 
 
   <link name="world"/>

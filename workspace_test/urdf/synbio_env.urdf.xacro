@@ -2,7 +2,26 @@
 <robot name="synbio_env" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find workspace_test)/urdf/env_macro.xacro"/>
-  <xacro:property name="table_height" value="0.845"/>
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+  <xacro:property name="table_height" value="0"/>
+
+  <!-- RIGHT -->
+  <xacro:property name="right_xyz" default="1.5748 0.508 ${table_height}"/>
+  <xacro:property name="right_rpy" default="0 0 ${pi}" />
+  <xacro:property name="right_tf_prefix" default="right_"/>
+
+  <!-- LEFT -->
+  <xacro:property name="left_xyz" default="0.9144 0.5588 ${table_height}" />
+  <xacro:property name="left_rpy" default="0 0 ${pi}" />
+  <xacro:property name="left_tf_prefix" default="left_"/>
+
+  <xacro:arg name="ur_type" default="ur3e"/>
+  <xacro:arg name="joint_limits_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+
 
   <link name="world"/>
   <!--This will create the scene where the robot is located in-->
@@ -12,5 +31,28 @@
       <origin xyz="0 0 ${table_height}" rpy="0 0 0" />
   </xacro:spawn_env>
 
+  <xacro:ur_robot
+    parent="world"
+    tf_prefix="${left_tf_prefix}"
+    name="left_$(arg ur_type)"
+    joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+    kinematics_parameters_file="$(arg kinematics_parameters_file)"
+    physical_parameters_file="$(arg physical_parameters_file)"
+    visual_parameters_file="$(arg visual_parameters_file)"
+    >
+    <origin xyz="${left_xyz}" rpy="${left_rpy}"/>
+  </xacro:ur_robot>
+
+  <xacro:ur_robot
+    parent="world"
+    tf_prefix="${right_tf_prefix}"
+    name="right_$(arg ur_type)"
+    joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+    kinematics_parameters_file="$(arg kinematics_parameters_file)"
+    physical_parameters_file="$(arg physical_parameters_file)"
+    visual_parameters_file="$(arg visual_parameters_file)"
+    >
+    <origin xyz="${right_xyz}" rpy="${right_rpy}"/>
+  </xacro:ur_robot>
 
 </robot>
