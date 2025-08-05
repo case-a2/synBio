@@ -21,36 +21,42 @@
     <link name="table">
       <visual>
         <geometry>
-          <mesh filename="package://workspace_test/meshes/workbench.dae"/>
+          <box size="1.8288 0.762 0.0445"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0.762 -0.845"/>
+        <material name="gray">
+          <color rgba="0.5 0.5 0.5 1"/>
+        </material>
+        <origin rpy="0 0 0" xyz="${1.8288 / 2} ${0.762 / 2} ${-0.0445 / 2}"/>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://workspace_test/meshes/workbench.dae"/>
+          <box size="1.8288 0.762 0.0445"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0.762 -0.845"/>
+        <origin rpy="0 0 0" xyz="${1.8288 / 2} ${0.762 / 2} ${-0.0445 / 2}"/>
       </collision>
     </link>
+
+    <!-- <mesh filename="package://workspace_test/meshes/workbench.dae"/> -->
+
 
     <!-- CAMERA MOUNT -->
     <joint name="table_to_camera_mount_1" type="fixed">
       <parent link="table"/>
       <child link="camera_mount_1"/>
-      <origin xyz="0.24 0.762 0" rpy="0 0 0"/>
+      <origin xyz="0.25 0.762 0" rpy="0 0 0"/>
     </joint>
     <link name="camera_mount_1">
       <visual>
         <geometry>
           <box size="0.030 0.030 0.9144"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0 ${0.9144 / 2}"/>
+        <origin rpy="0 0 0" xyz="0 0.015 ${0.9144 / 2}"/>
       </visual>
       <collision>
         <geometry>
           <box size="0.030 0.030 0.9144"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0 ${0.9144 / 2}"/>
+        <origin rpy="0 0 0" xyz="0 0.015 ${0.9144 / 2}"/>
       </collision>
     </link>
 
@@ -73,7 +79,7 @@
       <parent link="camera_mount_1"/>
       <child link="camera_mount_2"/>
       <!-- edit origin of joints to change camera height -->
-      <origin xyz="0 0 0.8" rpy="${pi/2} 0 0"/>
+      <origin xyz="0.0 0.0 0.785" rpy="${pi/2} 0 0"/>
     </joint>
 
 <!-- 0.690875 -->
@@ -82,12 +88,13 @@
     <!-- CAMERA -->
     <link name="camera_mount_3" />
     <xacro:sensor_d435 parent="camera_mount_3" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.0245 0 -0.0125" rpy="0 0 0"/>
     </xacro:sensor_d435>
+
     <joint name="camera_mount_to_realsense_d435" type="fixed">
       <parent link="camera_mount_2"/>
       <child link="camera_mount_3"/>
-      <origin xyz="0.01 -0.025 0.3375" rpy="${pi/2} 0 ${3*pi/2}"/>
+      <origin xyz="0.0 0.0 0.3" rpy="${pi/2} 0 ${3*pi/2}"/>
     </joint>
 
 

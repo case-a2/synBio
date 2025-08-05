@@ -11,7 +11,7 @@ def generate_launch_description():
     ur_type = LaunchConfiguration("ur_type")
     description_package = FindPackageShare("workspace_test")
     description_file = PathJoinSubstitution(
-        [description_package, "urdf", "synbio_scene.urdf.xacro"]
+        [description_package, "urdf", "synbio_env.urdf.xacro"]
     )
 
     rvizconfig_file = PathJoinSubstitution([description_package, "rviz", "workspace_analysis.rviz"])
