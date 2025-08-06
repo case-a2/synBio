@@ -7,7 +7,7 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: Case Ashton
     author_email: case@tamu.edu
-    generated_timestamp: 1747348805
+    generated_timestamp: 1754501017
   control_xacro:
     command:
       - position

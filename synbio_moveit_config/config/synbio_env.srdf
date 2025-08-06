@@ -15,17 +15,29 @@
     <group name="right_ur_arm">
         <chain base_link="right_base_link" tip_link="right_tool0"/>
     </group>
-    <group name="left_ur_tool0">
+    <group name="left_zimmer_gripper">
         <link name="left_tool0"/>
+        <link name="left_gripper_base_link"/>
+        <joint name="left_gripper_slider_1_joint"/>
+        <joint name="left_gripper_slider_2_joint"/>
     </group>
-    <group name="right_ur_tool0">
+    <group name="right_zimmer_gripper">
         <link name="right_tool0"/>
+        <link name="right_gripper_base_link"/>
+        <joint name="right_gripper_slider_1_joint"/>
+        <joint name="right_gripper_slider_2_joint"/>
     </group>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="left_ee" parent_link="left_tool0" group="left_zimmer_gripper" parent_group="left_ur_arm"/>
+    <end_effector name="right_ee" parent_link="right_tool0" group="right_zimmer_gripper" parent_group="right_ur_arm"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="camera_link" link2="camera_mount_1" reason="Never"/>
     <disable_collisions link1="camera_link" link2="camera_mount_2" reason="Adjacent"/>
     <disable_collisions link1="camera_link" link2="left_base_link_inertia" reason="Never"/>
     <disable_collisions link1="camera_link" link2="left_forearm_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="left_gripper_base_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="left_gripper_slider_1" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="left_gripper_slider_2" reason="Never"/>
     <disable_collisions link1="camera_link" link2="left_shoulder_link" reason="Never"/>
     <disable_collisions link1="camera_link" link2="left_upper_arm_link" reason="Never"/>
     <disable_collisions link1="camera_link" link2="left_wrist_1_link" reason="Never"/>
@@ -33,6 +45,9 @@
     <disable_collisions link1="camera_link" link2="left_wrist_3_link" reason="Never"/>
     <disable_collisions link1="camera_link" link2="right_base_link_inertia" reason="Never"/>
     <disable_collisions link1="camera_link" link2="right_forearm_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="right_gripper_base_link" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="right_gripper_slider_1" reason="Never"/>
+    <disable_collisions link1="camera_link" link2="right_gripper_slider_2" reason="Never"/>
     <disable_collisions link1="camera_link" link2="right_shoulder_link" reason="Never"/>
     <disable_collisions link1="camera_link" link2="right_upper_arm_link" reason="Never"/>
     <disable_collisions link1="camera_link" link2="right_wrist_1_link" reason="Never"/>
@@ -50,6 +65,9 @@
     <disable_collisions link1="camera_mount_1" link2="left_wrist_3_link" reason="Never"/>
     <disable_collisions link1="camera_mount_1" link2="right_base_link_inertia" reason="Never"/>
     <disable_collisions link1="camera_mount_1" link2="right_forearm_link" reason="Never"/>
+    <disable_collisions link1="camera_mount_1" link2="right_gripper_base_link" reason="Never"/>
+    <disable_collisions link1="camera_mount_1" link2="right_gripper_slider_1" reason="Never"/>
+    <disable_collisions link1="camera_mount_1" link2="right_gripper_slider_2" reason="Never"/>
     <disable_collisions link1="camera_mount_1" link2="right_shoulder_link" reason="Never"/>
     <disable_collisions link1="camera_mount_1" link2="right_upper_arm_link" reason="Never"/>
     <disable_collisions link1="camera_mount_1" link2="right_wrist_1_link" reason="Never"/>
@@ -59,6 +77,9 @@
     <disable_collisions link1="camera_mount_1" link2="wall" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="left_base_link_inertia" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="left_forearm_link" reason="Never"/>
+    <disable_collisions link1="camera_mount_2" link2="left_gripper_base_link" reason="Never"/>
+    <disable_collisions link1="camera_mount_2" link2="left_gripper_slider_1" reason="Never"/>
+    <disable_collisions link1="camera_mount_2" link2="left_gripper_slider_2" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="left_shoulder_link" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="left_upper_arm_link" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="left_wrist_1_link" reason="Never"/>
@@ -66,6 +87,9 @@
     <disable_collisions link1="camera_mount_2" link2="left_wrist_3_link" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="right_base_link_inertia" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="right_forearm_link" reason="Never"/>
+    <disable_collisions link1="camera_mount_2" link2="right_gripper_base_link" reason="Never"/>
+    <disable_collisions link1="camera_mount_2" link2="right_gripper_slider_1" reason="Never"/>
+    <disable_collisions link1="camera_mount_2" link2="right_gripper_slider_2" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="right_shoulder_link" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="right_upper_arm_link" reason="Never"/>
     <disable_collisions link1="camera_mount_2" link2="right_wrist_1_link" reason="Never"/>
@@ -79,6 +103,7 @@
     <disable_collisions link1="left_base_link_inertia" link2="left_wrist_2_link" reason="Never"/>
     <disable_collisions link1="left_base_link_inertia" link2="right_base_link_inertia" reason="Adjacent"/>
     <disable_collisions link1="left_base_link_inertia" link2="right_forearm_link" reason="Never"/>
+    <disable_collisions link1="left_base_link_inertia" link2="right_gripper_slider_2" reason="Never"/>
     <disable_collisions link1="left_base_link_inertia" link2="right_shoulder_link" reason="Never"/>
     <disable_collisions link1="left_base_link_inertia" link2="right_upper_arm_link" reason="Never"/>
     <disable_collisions link1="left_base_link_inertia" link2="right_wrist_1_link" reason="Never"/>
@@ -90,6 +115,18 @@
     <disable_collisions link1="left_forearm_link" link2="left_wrist_1_link" reason="Adjacent"/>
     <disable_collisions link1="left_forearm_link" link2="right_base_link_inertia" reason="Never"/>
     <disable_collisions link1="left_forearm_link" link2="right_shoulder_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_base_link" link2="left_gripper_slider_1" reason="Adjacent"/>
+    <disable_collisions link1="left_gripper_base_link" link2="left_gripper_slider_2" reason="Adjacent"/>
+    <disable_collisions link1="left_gripper_base_link" link2="left_wrist_1_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_base_link" link2="left_wrist_2_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_base_link" link2="left_wrist_3_link" reason="Adjacent"/>
+    <disable_collisions link1="left_gripper_slider_1" link2="left_gripper_slider_2" reason="Never"/>
+    <disable_collisions link1="left_gripper_slider_1" link2="left_wrist_1_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_slider_1" link2="left_wrist_2_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_slider_1" link2="left_wrist_3_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_slider_2" link2="left_wrist_1_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_slider_2" link2="left_wrist_2_link" reason="Never"/>
+    <disable_collisions link1="left_gripper_slider_2" link2="left_wrist_3_link" reason="Never"/>
     <disable_collisions link1="left_shoulder_link" link2="left_upper_arm_link" reason="Adjacent"/>
     <disable_collisions link1="left_shoulder_link" link2="left_wrist_1_link" reason="Never"/>
     <disable_collisions link1="left_shoulder_link" link2="left_wrist_2_link" reason="Never"/>
@@ -122,6 +159,18 @@
     <disable_collisions link1="right_base_link_inertia" link2="wall" reason="Never"/>
     <disable_collisions link1="right_forearm_link" link2="right_upper_arm_link" reason="Adjacent"/>
     <disable_collisions link1="right_forearm_link" link2="right_wrist_1_link" reason="Adjacent"/>
+    <disable_collisions link1="right_gripper_base_link" link2="right_gripper_slider_1" reason="Adjacent"/>
+    <disable_collisions link1="right_gripper_base_link" link2="right_gripper_slider_2" reason="Adjacent"/>
+    <disable_collisions link1="right_gripper_base_link" link2="right_wrist_1_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_base_link" link2="right_wrist_2_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_base_link" link2="right_wrist_3_link" reason="Adjacent"/>
+    <disable_collisions link1="right_gripper_slider_1" link2="right_gripper_slider_2" reason="Never"/>
+    <disable_collisions link1="right_gripper_slider_1" link2="right_wrist_1_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_slider_1" link2="right_wrist_2_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_slider_1" link2="right_wrist_3_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_slider_2" link2="right_wrist_1_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_slider_2" link2="right_wrist_2_link" reason="Never"/>
+    <disable_collisions link1="right_gripper_slider_2" link2="right_wrist_3_link" reason="Never"/>
     <disable_collisions link1="right_shoulder_link" link2="right_upper_arm_link" reason="Adjacent"/>
     <disable_collisions link1="right_shoulder_link" link2="right_wrist_1_link" reason="Never"/>
     <disable_collisions link1="right_shoulder_link" link2="right_wrist_2_link" reason="Never"/>

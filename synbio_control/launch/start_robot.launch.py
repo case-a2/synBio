@@ -228,14 +228,13 @@ def launch_setup():
 
     nodes_to_start = [
         control_node,
-        right_dashboard_client_node,
-        left_dashboard_client_node,
         controller_stopper_node,
-        # left_controller_stopper_node,
-        right_urscript_interface,
-        left_urscript_interface,
         rsp,
         rviz_node,
+        right_dashboard_client_node,
+        left_dashboard_client_node,
+        right_urscript_interface,
+        left_urscript_interface,
         right_initial_joint_controller_spawner_stopped,
         left_initial_joint_controller_spawner_stopped,
         right_initial_joint_controller_spawner_started,
