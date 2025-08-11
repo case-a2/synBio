@@ -3,14 +3,22 @@
     <Domain Id="any">
         <General>
             <Interfaces>
-                <NetworkInterface name="enP8p1s0,br-54d5e38c764e,lo" multicast="default" />
+                <NetworkInterface name="enP8p1s0" />
+                <NetworkInterface name="br-54d5e38c764e" />
             </Interfaces>
-            <AllowMulticast>default</AllowMulticast>
+            <AllowMulticast>true</AllowMulticast>
 	    <MaxMessageSize>65500B</MaxMessageSize>
 	    <Transport>udp</Transport>
         </General>
-        <Discovery>
-		<ParticipantIndex>none</ParticipantIndex>
-        </Discovery>
+	<Discovery>
+		<Peers>
+			<Peer address="10.42.0.1"/>
+		</Peers>
+		<ParticipantIndex>auto</ParticipantIndex>
+	</Discovery>
+	<Tracing>
+		<Verbosity>config</Verbosity>
+		<OutputFile>cdds.log.${CYCLONEDDS_PID}</OutputFile>
+        </Tracing>
     </Domain>
 </CycloneDDS>
