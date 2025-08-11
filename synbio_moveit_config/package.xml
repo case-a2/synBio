@@ -4,7 +4,7 @@
   <name>synbio_moveit_config</name>
   <version>0.3.0</version>
   <description>
-     An automatically generated package with all the configuration and launch files for using the my_robot_cell with the MoveIt Motion Planning Framework
+     An automatically generated package with all the configuration and launch files for using the synbio_env with the MoveIt Motion Planning Framework
   </description>
   <maintainer email="case@tamu.edu">Case Ashton</maintainer>
 
@@ -34,10 +34,10 @@
   <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_ros_visualization</exec_depend>
   <exec_depend>moveit_setup_assistant</exec_depend>
-  <exec_depend>my_robot_cell_description</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>rviz_common</exec_depend>
   <exec_depend>rviz_default_plugins</exec_depend>
+  <!-- <exec_depend>synbio_moveit_config</exec_depend> -->
   <exec_depend>xacro</exec_depend>
 
 

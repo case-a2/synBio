@@ -2,7 +2,7 @@
 <robot name="ur3e_cell" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find zimmer_description)/urdf/zimmer_gripper_macro.xacro"/>
-  <xacro:include filename="$(find my_robot_cell_description)/urdf/my_robot_cell_macro.xacro"/>
+  <!-- <xacro:include filename="$(find my_robot_cell_description)/urdf/my_robot_cell_macro.xacro"/> -->
 
   <!-- end-effector prefix -->
   <xacro:arg name="prefix" default="zimmer_"/>
@@ -13,7 +13,7 @@
   <xacro:arg name="physical_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
   <xacro:arg name="visual_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
 
-  <link name="world"/>
+  <!-- <link name="world"/> -->
   <!--This will create the scene where the robot is located in-->
   <xacro:my_robot_cell
     parent="world"
@@ -26,10 +26,12 @@
       <origin xyz="0 0 1" rpy="0 0 0" />
   </xacro:my_robot_cell>
 
+  <link name="world"/>
+
   <!-- end-effector -->
   <xacro:zimmer_gripper 
       prefix="$(arg prefix)"
-      parent="$(arg ur_type)_tool0">
+      parent="world">
   </xacro:zimmer_gripper>
 
   <!-- Attach the gripper to the UR3e tool0 -->

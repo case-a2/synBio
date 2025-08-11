@@ -1,7 +1,7 @@
 from moveit_configs_utils import MoveItConfigsBuilder
-from moveit_configs_utils.launches import generate_moveit_rviz_launch
+from moveit_configs_utils.launches import generate_demo_launch
 
 
 def generate_launch_description():
     moveit_config = MoveItConfigsBuilder("synbio_env", package_name="synbio_moveit_config").to_moveit_configs()
-    return generate_moveit_rviz_launch(moveit_config)
+    return generate_demo_launch(moveit_config)

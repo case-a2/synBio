@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
 
   <xacro:arg name="use_nominal_extrinsics" default="true"/>
@@ -8,16 +7,11 @@
   <xacro:arg name="use_mesh" default="true"/>
 
 
-  <xacro:macro name="my_robot_cell" params="
+  <xacro:macro name="spawn_env" params="
     parent
     *origin
-    ur_type
-    joint_limits_parameters_file
-    kinematics_parameters_file
-    physical_parameters_file
-    visual_parameters_file
     ">
-
+    
     <!-- TABLE -->
     <joint name="table_base_joint" type="fixed">
       <xacro:insert_block name="origin" />
@@ -27,36 +21,42 @@
     <link name="table">
       <visual>
         <geometry>
-          <mesh filename="package://workspace_test/meshes/workbench.dae"/>
+          <box size="1.8288 0.762 0.0445"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0.762 -0.845"/>
+        <material name="gray">
+          <color rgba="0.5 0.5 0.5 1"/>
+        </material>
+        <origin rpy="0 0 0" xyz="${1.8288 / 2} ${0.762 / 2} ${-0.0445 / 2}"/>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://workspace_test/meshes/workbench.dae"/>
+          <box size="1.8288 0.762 0.0445"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0.762 -0.845"/>
+        <origin rpy="0 0 0" xyz="${1.8288 / 2} ${0.762 / 2} ${-0.0445 / 2}"/>
       </collision>
     </link>
+
+    <!-- <mesh filename="package://workspace_test/meshes/workbench.dae"/> -->
+
 
     <!-- CAMERA MOUNT -->
     <joint name="table_to_camera_mount_1" type="fixed">
       <parent link="table"/>
       <child link="camera_mount_1"/>
-      <origin xyz="0.24 0.762 0" rpy="0 0 0"/>
+      <origin xyz="0.25 0.762 0" rpy="0 0 0"/>
     </joint>
     <link name="camera_mount_1">
       <visual>
         <geometry>
           <box size="0.030 0.030 0.9144"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0 ${0.9144 / 2}"/>
+        <origin rpy="0 0 0" xyz="0 0.015 ${0.9144 / 2}"/>
       </visual>
       <collision>
         <geometry>
           <box size="0.030 0.030 0.9144"/>
         </geometry>
-        <origin rpy="0 0 0" xyz="0 0 ${0.9144 / 2}"/>
+        <origin rpy="0 0 0" xyz="0 0.015 ${0.9144 / 2}"/>
       </collision>
     </link>
 
@@ -79,7 +79,7 @@
       <parent link="camera_mount_1"/>
       <child link="camera_mount_2"/>
       <!-- edit origin of joints to change camera height -->
-      <origin xyz="0 0 0.8" rpy="${pi/2} 0 0"/>
+      <origin xyz="0.0 0.0 0.785" rpy="${pi/2} 0 0"/>
     </joint>
 
 <!-- 0.690875 -->
@@ -88,12 +88,13 @@
     <!-- CAMERA -->
     <link name="camera_mount_3" />
     <xacro:sensor_d435 parent="camera_mount_3" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.0245 0 -0.0125" rpy="0 0 0"/>
     </xacro:sensor_d435>
+
     <joint name="camera_mount_to_realsense_d435" type="fixed">
       <parent link="camera_mount_2"/>
       <child link="camera_mount_3"/>
-      <origin xyz="0.01 -0.025 0.3375" rpy="${pi/2} 0 ${3*pi/2}"/>
+      <origin xyz="0.0 0.0 0.3" rpy="${pi/2} 0 ${3*pi/2}"/>
     </joint>
 
 
@@ -118,51 +119,9 @@
     <joint name="base_to_wall" type="fixed">
       <parent link="table"/>
       <child link="wall"/>
-      <origin xyz="1 1.1 0.5"/>
+      <origin xyz="1 0.85 0.5"/>
     </joint>
 
-
-    <!-- ROBOT MOUNT 1 -->
-    <link name="robot_mount_1"/>
-    <joint name="base_to_robot_mount_1" type="fixed">
-      <parent link="table"/>
-      <child link="robot_mount_1"/>
-      <origin xyz="0.9144 0.5588 0" rpy="0 0 ${3*pi/2}" />
-    </joint>
-
-    <!--This will create the specific robot-->
-    <xacro:ur_robot
-      name="${ur_type}"
-      tf_prefix="${ur_type}1_"
-      parent="robot_mount_1"
-      joint_limits_parameters_file="${joint_limits_parameters_file}"
-      kinematics_parameters_file="${kinematics_parameters_file}"
-      physical_parameters_file="${physical_parameters_file}"
-      visual_parameters_file="${visual_parameters_file}"
-    >
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:ur_robot>
-
-    <!-- ROBOT MOUNT 2 -->
-    <link name="robot_mount_2"/>
-    <joint name="base_to_robot_mount_2" type="fixed">
-      <parent link="table"/>
-      <child link="robot_mount_2"/>
-      <origin xyz="1.5748 0.508 0" rpy="0 0 ${3*pi/2}" />
-    </joint>
-
-    <!-- ROBOT 2 -->
-    <xacro:ur_robot
-      name="${ur_type}"
-      tf_prefix="${ur_type}2_"
-      parent="robot_mount_2"
-      joint_limits_parameters_file="${joint_limits_parameters_file}"
-      kinematics_parameters_file="${kinematics_parameters_file}"
-      physical_parameters_file="${physical_parameters_file}"
-      visual_parameters_file="${visual_parameters_file}"
-    >
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:ur_robot>
 
   </xacro:macro>
 

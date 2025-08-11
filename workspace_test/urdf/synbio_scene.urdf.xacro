@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="synbio_scene">
+  <xacro:include filename="$(find workspace_test)/urdf/synbio_env.urdf.xacro"/>
+  <xacro:include filename="$(find workspace_test)/urdf/right_robot.urdf.xacro"/>
+  <xacro:include filename="$(find workspace_test)/urdf/left_robot.urdf.xacro"/>
+
+
+</robot>
